@@ -7,15 +7,15 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class User {
-	private Scanner scanner;
-	Connection connection;
-	public User(Connection connection, Scanner scanner) {
-		this.scanner=scanner;
-		this.connection = connection;
-		
-	}
+    private Connection connection;
+    private Scanner scanner;
 
-	public void register(){
+    public User(Connection connection, Scanner scanner){
+        this.connection = connection;
+        this.scanner = scanner;
+    }
+
+    public void register(){
         scanner.nextLine();
         System.out.print("Full Name: ");
         String full_name = scanner.nextLine();
@@ -66,6 +66,7 @@ public class User {
         }
         return null;
     }
+
     public boolean user_exist(String email){
         String query = "SELECT * FROM user WHERE email = ?";
         try{
@@ -84,4 +85,3 @@ public class User {
         return false;
     }
 }
-	

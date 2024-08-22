@@ -1,23 +1,19 @@
 package bms;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Scanner;
 
 public class Account {
-	private Scanner scanner;
-	private Connection connection;
-	public Account(Connection connection, Scanner scanner) {
-		this.scanner=scanner;
-	}
-	
+    private Connection connection;
+    private Scanner scanner;
+    public Account(Connection connection, Scanner scanner){
+        this.connection = connection;
+        this.scanner = scanner;
 
-	public long open_account(String email){
+    }
+    public long open_account(String email){
         if(!account_exist(email)) {
-            String open_account_query = "INSERT INTO Account(account_number, full_name, email, balance, security_pin) VALUES(?, ?, ?, ?, ?)";
+            String open_account_query = "INSERT INTO Accounts(account_number, full_name, email, balance, security_pin) VALUES(?, ?, ?, ?, ?)";
             scanner.nextLine();
             System.out.print("Enter Full Name: ");
             String full_name = scanner.nextLine();
@@ -49,7 +45,7 @@ public class Account {
     }
 
     public long getAccount_number(String email) {
-        String query = "SELECT account_number from Account WHERE email = ?";
+        String query = "SELECT account_number from Accounts WHERE email = ?";
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, email);
@@ -62,6 +58,8 @@ public class Account {
         }
         throw new RuntimeException("Account Number Doesn't Exist!");
     }
+
+
 
     private long generateAccountNumber() {
         try {
@@ -80,8 +78,9 @@ public class Account {
     }
 
     public boolean account_exist(String email){
-        String query = "SELECT account_number from Account WHERE email = ?";
+        String query = "SELECT account_number from Accounts WHERE email = ?";
         try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
@@ -96,6 +95,3 @@ public class Account {
 
     }
 }
-
-	
-		
